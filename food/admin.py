@@ -200,14 +200,14 @@ class SampleFoodAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(SQLiteMaster)
-class SQLiteMasterAdmin(admin.ModelAdmin):
-    lists = []
-    for f in SQLiteMaster._meta.fields:
-        lists.append(f.name)
-    list_display = lists
-    pass
-
+# @admin.register(SQLiteMaster)
+# class SQLiteMasterAdmin(admin.ModelAdmin):
+#     lists = []
+#     for f in SQLiteMaster._meta.fields:
+#         lists.append(f.name)
+#     list_display = lists
+#     pass
+#
 
 @admin.register(SubSampleFood)
 class SubSampleFoodAdmin(admin.ModelAdmin):

@@ -145,7 +145,7 @@ class FoodComponent(models.Model):
     - min_year_acquired：整数字段，表示最小年份获取。
     """
     id = models.IntegerField(primary_key=True, verbose_name="ID")
-    fdc_id = models.IntegerField(verbose_name="FDC ID")
+    fdc_id = models.IntegerField(verbose_name="FDC ID", null=True, blank=True)
     name = models.TextField(verbose_name="组成成分名称")
     pct_weight = models.FloatField(verbose_name="百分比重量")
     is_refuse = models.BooleanField(verbose_name="是否为废物")
@@ -233,11 +233,11 @@ class FoodPortion(models.Model):
     seq_num = models.IntegerField(verbose_name="序列号")
     amount = models.FloatField(verbose_name="量")
     measure_unit_id = models.IntegerField(verbose_name="度量单位ID")
-    portion_description = models.TextField(verbose_name="分量描述")
+    portion_description = models.TextField(verbose_name="分量描述", null=True, blank=True)
     modifier = models.TextField(verbose_name="修改器")
     gram_weight = models.FloatField(verbose_name="克重")
     data_points = models.IntegerField(verbose_name="数据点")
-    footnote = models.TextField(verbose_name="脚注")
+    footnote = models.TextField(verbose_name="脚注", null=True, blank=True)
     min_year_acquired = models.IntegerField(verbose_name="最小年份获取")
 
     class Meta:
@@ -273,7 +273,7 @@ class FoodUpdateLogEntry(models.Model):
     - last_updated：文本字段，表示最后更新日期。
     """
     id = models.IntegerField(primary_key=True, verbose_name="ID")
-    description = models.TextField(verbose_name="描述")
+    description = models.TextField(verbose_name="描述", null=True, blank=True)
     last_updated = models.TextField(verbose_name="最后更新日期")
 
     class Meta:
@@ -487,29 +487,6 @@ class SampleFood(models.Model):
         db_table = "sample_food"
         verbose_name = "样品食品"
         verbose_name_plural = "样品食品"
-
-
-# SQLite主表
-class SQLiteMaster(models.Model):
-    """
-    用于存储SQLite主表数据的表。
-    列：
-    - type：文本字段，表示类型。
-    - name：文本字段，表示名称。
-    - tbl_name：文本字段，表示表名。
-    - rootpage：整数字段，表示根页。
-    - sql：文本字段，表示SQL语句。
-    """
-    type = models.TextField(verbose_name="类型")
-    name = models.TextField(verbose_name="名称")
-    tbl_name = models.TextField(verbose_name="表名")
-    rootpage = models.IntegerField(verbose_name="根页")
-    sql = models.TextField(verbose_name="SQL语句")
-
-    class Meta:
-        db_table = "sqlite_master"
-        verbose_name = "SQLite主表"
-        verbose_name_plural = "SQLite主表"
 
 
 # 子样品食品表
