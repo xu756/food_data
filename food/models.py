@@ -53,10 +53,6 @@ class RecipeFood(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='食谱食品id')
     recipe_id = models.IntegerField(verbose_name='食谱id')
     food_id = models.IntegerField(verbose_name='食品id')
-    # 食品的数量
-    amount = models.FloatField(verbose_name='食品数量')
-    # 食品的单位
-    unit = models.CharField(max_length=20, verbose_name='食品单位')
 
     class Meta:
         db_table = 'recipe_food'
@@ -77,7 +73,7 @@ class Food(models.Model):
     """
     fdc_id = models.IntegerField(primary_key=True, verbose_name="食品id")
     data_type = models.TextField(verbose_name="数据类型")
-    description = models.CharField(max_length=64, verbose_name="食品描述", )
+    description = models.CharField(max_length=64, verbose_name="食品描述" )
     food_category_id = models.IntegerField(verbose_name="食品类别ID")
     publication_date = models.TextField(verbose_name="发布日期")
 
@@ -88,7 +84,7 @@ class Food(models.Model):
         indexes = [
             models.Index(fields=['description'])
         ]
-        ordering = ['fdc_id']
+        ordering = ['-fdc_id']
 
 
 class Nutrient(models.Model):

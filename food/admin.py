@@ -16,6 +16,34 @@ class NutrientAdmin(admin.ModelAdmin):
     for f in Nutrient._meta.fields:
         lists.append(f.name)
     list_display = lists
+    search_fields = ['id', 'name']
+    pass
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    lists = []
+    for f in User._meta.fields:
+        lists.append(f.name)
+    list_display = lists
+    pass
+
+
+@admin.register(Recipe)
+class RecipeAdmin(admin.ModelAdmin):
+    lists = []
+    for f in Recipe._meta.fields:
+        lists.append(f.name)
+    list_display = lists
+    pass
+
+
+@admin.register(RecipeFood)
+class RecipeFoodAdmin(admin.ModelAdmin):
+    lists = []
+    for f in RecipeFood._meta.fields:
+        lists.append(f.name)
+    list_display = lists
     pass
 
 
@@ -35,7 +63,7 @@ class FoodNutrientAdmin(admin.ModelAdmin):
     for f in FoodNutrient._meta.fields:
         lists.append(f.name)
     list_display = lists
-    search_fields = ['fdc_id']
+    search_fields = ['fdc_id', 'nutrient_id']
     pass
 
 # 注册模型到管理界面
