@@ -1,47 +1,6 @@
 from django.db import models
 
 
-# 采集样品表
-class AcquisitionSamples(models.Model):
-    """
-    用于存储采集样品数据的表。
-    列：
-    - fdc_id_of_sample_food：整数字段，表示样品食品的FDC ID。
-    - fdc_id_of_acquisition_food：整数字段，表示采集食品的FDC ID。
-    """
-    id = models.AutoField(primary_key=True, verbose_name="ID")
-    fdc_id_of_sample_food = models.IntegerField(verbose_name="样品食品FDC ID")
-    fdc_id_of_acquisition_food = models.IntegerField(verbose_name="采集食品FDC ID")
-
-    class Meta:
-        db_table = "acquisition_samples"
-        verbose_name = "采集样品"
-        verbose_name_plural = "采集样品"
-
-
-# 农业样品表
-class AgriculturalSamples(models.Model):
-    """
-    用于存储农业样品数据的表。
-    列：
-    - fdc_id：表的主键。
-    - acquisition_date：日期字段，表示样品采集日期。
-    - market_class：文本字段，表示样品的市场类别。
-    - treatment：文本字段，表示样品的处理方式。
-    - state：文本字段，表示样品的州份。
-    """
-    fdc_id = models.IntegerField(primary_key=True, verbose_name="FDC ID")
-    acquisition_date = models.DateField(verbose_name="采集日期")
-    market_class = models.TextField(verbose_name="市场类别")
-    treatment = models.TextField(verbose_name="处理方式")
-    state = models.TextField(verbose_name="州份")
-
-    class Meta:
-        db_table = "agricultural_samples"
-        verbose_name = "农业样品"
-        verbose_name_plural = "农业样品"
-
-
 # 食品表
 class Food(models.Model):
     """
@@ -53,9 +12,9 @@ class Food(models.Model):
     - food_category_id：整数字段，表示食品类别的ID。
     - publication_date：文本字段，表示食品数据的发布日期。
     """
-    fdc_id = models.IntegerField(primary_key=True)
+    fdc_id = models.IntegerField(primary_key=True, verbose_name="食品id")
     data_type = models.TextField(verbose_name="数据类型")
-    description = models.TextField(verbose_name="食品描述")
+    description = models.CharField(max_length=64, verbose_name="食品描述", )
     food_category_id = models.IntegerField(verbose_name="食品类别ID")
     publication_date = models.TextField(verbose_name="发布日期")
 
@@ -63,6 +22,69 @@ class Food(models.Model):
         db_table = "food"
         verbose_name = "食品"
         verbose_name_plural = "食品"
+        indexes = [
+            models.Index(fields=['description'])
+        ]
+        ordering = ['fdc_id']
+
+
+class Nutrient(models.Model):
+    """
+    用于存储营养素数据的表。
+    列：
+    - id：表的主键。
+    - name：文本字段，表示名称。
+    - unit_name：文本字段，表示单位名称。
+    - nutrient_nbr：浮点数字段，表示营养素编号。
+    - rank：整数字段，表示排名。
+    """
+    id = models.IntegerField(primary_key=True, verbose_name="ID")
+    name = models.TextField(verbose_name="名称")
+    unit_name = models.TextField(verbose_name="单位名称")
+    nutrient_nbr = models.FloatField(verbose_name="营养素编号")
+    rank = models.IntegerField(verbose_name="排名")
+
+    class Meta:
+        db_table = "nutrient"
+        verbose_name = "营养素"
+        verbose_name_plural = "营养素"
+        ordering = ['id']
+
+
+# 食品营养素表
+class FoodNutrient(models.Model):
+    """
+    用于存储食品营养素数据的表。
+    列：
+    - id：表的主键。
+    - fdc_id：整数字段，表示食品的FDC ID。
+    - nutrient_id：整数字段，表示营养素的ID。
+    - amount：浮点数字段，表示量。
+    - data_points：整数字段，表示数据点。
+    - derivation_id：整数字段，表示派生ID。
+    - min：浮点数字段，表示最小值。
+    - max：浮点数字段，表示最大值。
+    - median：浮点数字段，表示中位数。
+    - footnote：文本字段，表示脚注。
+    - min_year_acquired：整数字段，表示最小年份获取。
+    """
+    id = models.IntegerField(primary_key=True, verbose_name="ID")
+    fdc_id = models.IntegerField(verbose_name="食品id")
+    nutrient_id = models.IntegerField(verbose_name="营养素ID")
+    amount = models.FloatField(verbose_name="量")
+    data_points = models.IntegerField(verbose_name="数据点")
+    derivation_id = models.IntegerField(verbose_name="派生ID")
+    min = models.FloatField(verbose_name="最小值")
+    max = models.FloatField(verbose_name="最大值")
+    median = models.FloatField(verbose_name="中位数")
+    footnote = models.TextField(verbose_name="脚注")
+    min_year_acquired = models.IntegerField(verbose_name="最小年份获取")
+
+    class Meta:
+        db_table = "food_nutrient"
+        verbose_name = "食品营养素"
+        verbose_name_plural = "食品营养素"
+        ordering = ['fdc_id']
 
 
 # 食品属性表
@@ -157,41 +179,49 @@ class FoodComponent(models.Model):
         db_table = "food_component"
         verbose_name = "食品组成成分"
         verbose_name_plural = "食品组成成分"
+        #          排序
+        ordering = ['id']
 
 
-# 食品营养素表
-class FoodNutrient(models.Model):
+# 采集样品表
+class AcquisitionSamples(models.Model):
     """
-    用于存储食品营养素数据的表。
+    用于存储采集样品数据的表。
     列：
-    - id：表的主键。
-    - fdc_id：整数字段，表示食品的FDC ID。
-    - nutrient_id：整数字段，表示营养素的ID。
-    - amount：浮点数字段，表示量。
-    - data_points：整数字段，表示数据点。
-    - derivation_id：整数字段，表示派生ID。
-    - min：浮点数字段，表示最小值。
-    - max：浮点数字段，表示最大值。
-    - median：浮点数字段，表示中位数。
-    - footnote：文本字段，表示脚注。
-    - min_year_acquired：整数字段，表示最小年份获取。
+    - fdc_id_of_sample_food：整数字段，表示样品食品的FDC ID。
+    - fdc_id_of_acquisition_food：整数字段，表示采集食品的FDC ID。
     """
-    id = models.IntegerField(primary_key=True, verbose_name="ID")
-    fdc_id = models.IntegerField(verbose_name="FDC ID")
-    nutrient_id = models.IntegerField(verbose_name="营养素ID")
-    amount = models.FloatField(verbose_name="量")
-    data_points = models.IntegerField(verbose_name="数据点")
-    derivation_id = models.IntegerField(verbose_name="派生ID")
-    min = models.FloatField(verbose_name="最小值")
-    max = models.FloatField(verbose_name="最大值")
-    median = models.FloatField(verbose_name="中位数")
-    footnote = models.TextField(verbose_name="脚注")
-    min_year_acquired = models.IntegerField(verbose_name="最小年份获取")
+    id = models.AutoField(primary_key=True, verbose_name="ID")
+    fdc_id_of_sample_food = models.IntegerField(verbose_name="样品食品FDC ID")
+    fdc_id_of_acquisition_food = models.IntegerField(verbose_name="采集食品FDC ID")
 
     class Meta:
-        db_table = "food_nutrient"
-        verbose_name = "食品营养素"
-        verbose_name_plural = "食品营养素"
+        db_table = "acquisition_samples"
+        verbose_name = "采集样品"
+        verbose_name_plural = "采集样品"
+
+
+# 农业样品表
+class AgriculturalSamples(models.Model):
+    """
+    用于存储农业样品数据的表。
+    列：
+    - fdc_id：表的主键。
+    - acquisition_date：日期字段，表示样品采集日期。
+    - market_class：文本字段，表示样品的市场类别。
+    - treatment：文本字段，表示样品的处理方式。
+    - state：文本字段，表示样品的州份。
+    """
+    fdc_id = models.IntegerField(primary_key=True, verbose_name="FDC ID")
+    acquisition_date = models.DateField(verbose_name="采集日期")
+    market_class = models.TextField(verbose_name="市场类别")
+    treatment = models.TextField(verbose_name="处理方式")
+    state = models.TextField(verbose_name="州份")
+
+    class Meta:
+        db_table = "agricultural_samples"
+        verbose_name = "农业样品"
+        verbose_name_plural = "农业样品"
 
 
 # 食品营养素转换因子表
@@ -233,11 +263,11 @@ class FoodPortion(models.Model):
     seq_num = models.IntegerField(verbose_name="序列号")
     amount = models.FloatField(verbose_name="量")
     measure_unit_id = models.IntegerField(verbose_name="度量单位ID")
-    portion_description = models.TextField(verbose_name="分量描述", null=True, blank=True)
+    portion_description = models.TextField(verbose_name="分量描述", null=True)
     modifier = models.TextField(verbose_name="修改器")
     gram_weight = models.FloatField(verbose_name="克重")
     data_points = models.IntegerField(verbose_name="数据点")
-    footnote = models.TextField(verbose_name="脚注", null=True, blank=True)
+    footnote = models.TextField(verbose_name="脚注", null=True)
     min_year_acquired = models.IntegerField(verbose_name="最小年份获取")
 
     class Meta:
@@ -452,26 +482,6 @@ class MeasureUnit(models.Model):
 
 
 # 营养素表
-class Nutrient(models.Model):
-    """
-    用于存储营养素数据的表。
-    列：
-    - id：表的主键。
-    - name：文本字段，表示名称。
-    - unit_name：文本字段，表示单位名称。
-    - nutrient_nbr：浮点数字段，表示营养素编号。
-    - rank：整数字段，表示排名。
-    """
-    id = models.IntegerField(primary_key=True, verbose_name="ID")
-    name = models.TextField(verbose_name="名称")
-    unit_name = models.TextField(verbose_name="单位名称")
-    nutrient_nbr = models.FloatField(verbose_name="营养素编号")
-    rank = models.IntegerField(verbose_name="排名")
-
-    class Meta:
-        db_table = "nutrient"
-        verbose_name = "营养素"
-        verbose_name_plural = "营养素"
 
 
 # 样品食品表
