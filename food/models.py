@@ -1,6 +1,69 @@
 from django.db import models
 
 
+# 用户
+class User(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name='用户id')
+    username = models.CharField(max_length=20, verbose_name='用户名')
+    password = models.CharField(max_length=20, verbose_name='密码')
+    email = models.EmailField(verbose_name='邮箱')
+    phone = models.CharField(max_length=11, verbose_name='手机号')
+    # 用户头像
+    img = models.ImageField(upload_to='user/', verbose_name='用户头像', default='user/default.jpg')
+    # 用户的性别
+    sex = models.CharField(max_length=10, verbose_name='性别', default='男')
+    # 用户的年龄
+    age = models.IntegerField(verbose_name='年龄', default=18)
+    # 用户的身高
+    height = models.FloatField(verbose_name='身高', default=170)
+    # 用户的体重
+    weight = models.FloatField(verbose_name='体重', default=60)
+    # 用户的血压
+    blood_pressure = models.CharField(max_length=20, verbose_name='血压', default='120/80')
+    # 用户的糖尿病
+    diabetes = models.TextField(verbose_name='糖尿病', default='false')
+    # 是否怀孕
+    pregnancy = models.TextField(verbose_name='怀孕', default='true')
+
+    class Meta:
+        db_table = 'user'
+        verbose_name = '用户'
+        verbose_name_plural = verbose_name
+
+
+#  食谱 多个食品组成一个食谱
+class Recipe(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name='食谱id')
+    name = models.CharField(max_length=20, verbose_name='食谱名称')
+    # 食谱描述
+    description = models.TextField(verbose_name='食谱描述')
+    # 食谱的作者
+    author = models.TextField(verbose_name='食谱作者')
+    # 食谱创建时间
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+
+    class Meta:
+        db_table = 'recipe'
+        verbose_name = '食谱'
+        verbose_name_plural = verbose_name
+
+
+# 食谱食品表
+class RecipeFood(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name='食谱食品id')
+    recipe_id = models.IntegerField(verbose_name='食谱id')
+    food_id = models.IntegerField(verbose_name='食品id')
+    # 食品的数量
+    amount = models.FloatField(verbose_name='食品数量')
+    # 食品的单位
+    unit = models.CharField(max_length=20, verbose_name='食品单位')
+
+    class Meta:
+        db_table = 'recipe_food'
+        verbose_name = '食谱食品'
+        verbose_name_plural = verbose_name
+
+
 # 食品表
 class Food(models.Model):
     """
