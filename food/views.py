@@ -161,6 +161,7 @@ def get_recipe_food(request):
         food = Food.objects.filter(fdc_id=rf.food_id).first()
         list.append({
             'fdc_id': food.fdc_id,
+            'amount': rf.amount,
             'data_type': food.data_type,
             'description': food.description,
             'food_category_id': food.food_category_id,
@@ -231,6 +232,7 @@ def add_recipe_food(request):
     data = json.loads(request.body.decode('utf-8'))
     recipe_id = data.get('recipe_id')
     food_id = data.get('fdc_id')
+    amount = data.get('amount')
     #  查找是否已经存在
     recipe_food = RecipeFood.objects.filter(recipe_id=recipe_id, food_id=food_id).first()
     if recipe_food:
@@ -240,7 +242,7 @@ def add_recipe_food(request):
             'data': {}
         }
         return JsonResponse(data, safe=False)
-    recipe_food = RecipeFood.objects.create(recipe_id=recipe_id, food_id=food_id)
+    recipe_food = RecipeFood.objects.create(recipe_id=recipe_id, food_id=food_id,amount=amount)
     data = {
         'success': True,
         'msg': '添加成功',
