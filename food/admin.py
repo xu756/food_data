@@ -5,8 +5,8 @@ from food.models import *
 # Register your models here.
 
 # 设置app的标题
-admin.site.site_header = '我的Django项目'
-admin.site.site_title = '我的Django项目'
+admin.site.site_header = '我的项目'
+admin.site.site_title = '我的项目'
 admin.site.index_title = '后台管理'
 
 
