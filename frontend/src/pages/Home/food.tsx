@@ -11,6 +11,7 @@ export default () => {
             fdc_id: 1,
             data_type: '',
             description: '',
+            food_amount: 0,
             amount: 0,
             food_category_id: 0,
             publication_date: '2022-04-20',
@@ -124,7 +125,7 @@ export default () => {
                                 <th>Index</th>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>foodCategoryId</th>
+                                <th>FoodCategoryId</th>
                                 <th>PublicationDate</th>
                                 <th>Action</th>
                             </tr>
@@ -177,7 +178,8 @@ export default () => {
                         <th>DataType</th>
                         <th>FoodName</th>
                         <th>Amount</th>
-                        <th>foodCategoryID</th>
+                        <th>FoodAmount</th>
+                        <th>FoodCategoryID</th>
                         <th>PublicationDate</th>
                         <th>Action</th>
                     </tr>
@@ -191,6 +193,7 @@ export default () => {
                                 <td>{item.data_type}</td>
                                 <td>{item.description}</td>
                                 <td>{item.amount}</td>
+                                <td>{item.food_amount}</td>
                                 <td>{item.food_category_id}</td>
                                 <td>{item.publication_date}</td>
                                 <th>
@@ -212,6 +215,7 @@ export default () => {
                         <th>DataType</th>
                         <th>FoodName</th>
                         <th>Amount</th>
+                        <th>FoodAmount</th>
                         <th>FoodCategoryID</th>
                         <th>PublicationDate</th>
                         <th>Action</th>

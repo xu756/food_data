@@ -169,10 +169,15 @@ def get_recipe_food(request):
     recipe_food = RecipeFood.objects.filter(recipe_id=recipe_id)
     list = []
     for rf in recipe_food:
+        food_amount = 0
         food = Food.objects.filter(fdc_id=rf.food_id).first()
+        food_nutrient = FoodNutrient.objects.filter(fdc_id=rf.food_id)
+        for fn in food_nutrient:
+            food_amount += fn.amount + food_amount
         list.append({
             'fdc_id': food.fdc_id,
             'amount': rf.amount,
+            'food_amount': food_amount * rf.amount,
             'data_type': food.data_type,
             'description': food.description,
             'food_category_id': food.food_category_id,

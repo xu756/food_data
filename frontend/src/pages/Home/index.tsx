@@ -149,7 +149,7 @@ const Home = () => {
               <th>ID</th>
               <th>Name</th>
               <th>Description</th>
-                <th>Amount</th>
+                <th>RecipeAmount</th>
               <th>Author</th>
               <th>CreateTime</th>
               <th>Action</th>
@@ -188,7 +188,7 @@ const Home = () => {
               <th>Index</th>
               <th>Name</th>
               <th>Description</th>
-                <th>Amount</th>
+                <th>RecipeAmount</th>
               <th>Author</th>
               <th>CreateTime</th>
               <th>Action</th>
