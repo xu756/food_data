@@ -118,8 +118,19 @@ def update_user(request):
 def get_recipe(request):
     list = []
     for recipe in serializers.serialize('python', Recipe.objects.all()):
+        amount = 0
+        recipe_food = RecipeFood.objects.filter(recipe_id=recipe['pk'])
+        for rf in recipe_food:
+            food = Food.objects.filter(fdc_id=rf.food_id).first()
+            food_amount = rf.amount
+            food_nutrient = FoodNutrient.objects.filter(fdc_id=food.fdc_id)
+            for fn in food_nutrient:
+                nutrient = Nutrient.objects.filter(id=fn.nutrient_id).first()
+                amount += fn.amount * food_amount
+
         list.append({
             'id': recipe['pk'],
+            'amount': amount,  # 用于计算食谱的热量
             'name': recipe['fields']['name'],
             'description': recipe['fields']['description'],
             'author': recipe['fields']['author'],
@@ -242,7 +253,7 @@ def add_recipe_food(request):
             'data': {}
         }
         return JsonResponse(data, safe=False)
-    recipe_food = RecipeFood.objects.create(recipe_id=recipe_id, food_id=food_id,amount=amount)
+    recipe_food = RecipeFood.objects.create(recipe_id=recipe_id, food_id=food_id, amount=amount)
     data = {
         'success': True,
         'msg': '添加成功',

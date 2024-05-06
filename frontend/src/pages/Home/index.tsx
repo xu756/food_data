@@ -10,6 +10,7 @@ const Home = () => {
       id: 1,
       description: '',
       name: 'Loki',
+      amount: 1,
       author: 'Loki',
       create_time: '2022-04-20 00:00:00',
     },
@@ -148,6 +149,7 @@ const Home = () => {
               <th>ID</th>
               <th>Name</th>
               <th>Description</th>
+                <th>Amount</th>
               <th>Author</th>
               <th>CreateTime</th>
               <th>Action</th>
@@ -161,6 +163,7 @@ const Home = () => {
                   <th>{item.id}</th>
                   <td>{item.name}</td>
                   <td>{item.description}</td>
+                    <td>{item.amount}</td>
                   <td>
                     <div className="badge badge-neutral badge-outline">
                       {item.author}
@@ -185,6 +188,7 @@ const Home = () => {
               <th>Index</th>
               <th>Name</th>
               <th>Description</th>
+                <th>Amount</th>
               <th>Author</th>
               <th>CreateTime</th>
               <th>Action</th>
